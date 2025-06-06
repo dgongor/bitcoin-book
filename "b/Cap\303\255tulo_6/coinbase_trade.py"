@@ -1,0 +1,71 @@
+# -*- coding: utf-8 -*-
+"""Script de ejemplo para realizar operaciones básicas en Coinbase.
+
+Este script utiliza la biblioteca oficial `coinbase` para conectarse a la API de
+Coinbase. Es necesario disponer de una clave de API y un secreto asociados a una
+cuenta de Coinbase. Estos valores deben almacenarse en las variables de entorno
+`COINBASE_API_KEY` y `COINBASE_API_SECRET` antes de ejecutar el programa.
+
+Ejemplo de uso:
+    $ export COINBASE_API_KEY="tu_api_key"
+    $ export COINBASE_API_SECRET="tu_api_secret"
+    $ python3 coinbase_trade.py BTC-EUR 0.001
+
+El código solo muestra cómo inicializar el cliente, consultar el precio actual y
+realizar una orden de compra sencilla. Utiliza la red de pruebas de Coinbase y
+no está pensado para operar con fondos reales.
+"""
+
+from __future__ import annotations
+
+import os
+import sys
+
+try:
+    from coinbase.wallet.client import Client
+except ImportError as exc:  # pragma: no cover - dependencias opcionales
+    raise SystemExit(
+        "La biblioteca 'coinbase' no está instalada. Ejecuta 'pip install coinbase'"
+    ) from exc
+
+
+def get_client() -> Client:
+    """Inicializa y devuelve un cliente de Coinbase usando claves del entorno."""
+    api_key = os.environ.get("COINBASE_API_KEY")
+    api_secret = os.environ.get("COINBASE_API_SECRET")
+    if not api_key or not api_secret:
+        raise SystemExit(
+            "Debe definir COINBASE_API_KEY y COINBASE_API_SECRET en su entorno"
+        )
+    return Client(api_key, api_secret)
+
+
+def mostrar_precio(client: Client, par: str) -> None:
+    """Muestra en pantalla el precio actual de un par de divisas."""
+    precio = client.get_spot_price(currency_pair=par)
+    print(f"Precio actual de {par}: {precio['amount']} {precio['currency']}")
+
+
+def comprar_monedas(client: Client, cuenta: str, cantidad: float, moneda: str) -> None:
+    """Realiza una compra simple en la cuenta indicada."""
+    cuenta_obj = client.get_account(cuenta)
+    transaccion = cuenta_obj.buy(amount=str(cantidad), currency=moneda)
+    print("Orden realizada: ", transaccion)
+
+
+if __name__ == "__main__":
+    if len(sys.argv) != 3:
+        print("Uso: python3 coinbase_trade.py PAR_MONEDA CANTIDAD")
+        sys.exit(1)
+
+    par = sys.argv[1]
+    cantidad = float(sys.argv[2])
+
+    client = get_client()
+    mostrar_precio(client, par)
+
+    # Identificador de la cuenta principal en Coinbase (modo sandbox)
+    primary_account = client.get_primary_account().id
+
+    # Realiza una compra de ejemplo en modo sandbox
+    comprar_monedas(client, primary_account, cantidad, par.split("-")[0])
