@@ -20,9 +20,10 @@ Este repositorio contiene los siguientes ficheros:
 ├── Capítulo_5
 │   └── export.json
 ├── Capítulo_6
+│   └── coinbase_trade.py
 ├── COPYING
 └── README.md
 
-6 directories, 13 files
+6 directories, 14 files
 
 ``` 
