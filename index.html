@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Centro accesible: buscador, tareas y juegos</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#contenido">Saltar al contenido principal</a>
+    <header class="site-header" role="banner">
+      <div class="header-content">
+        <h1>Centro accesible</h1>
+        <p class="lead">
+          Herramientas con accesibilidad integral: navegación por teclado,
+          contraste alto, texto ajustable y compatibilidad con lectores de pantalla.
+        </p>
+      </div>
+      <div class="toolbar" role="region" aria-label="Controles de accesibilidad">
+        <div class="toolbar-group">
+          <span id="texto-label">Tamaño de texto</span>
+          <button type="button" class="btn" data-text="-1" aria-label="Reducir tamaño de texto">
+            A-
+          </button>
+          <button type="button" class="btn" data-text="0" aria-label="Restablecer tamaño de texto">
+            A
+          </button>
+          <button type="button" class="btn" data-text="1" aria-label="Aumentar tamaño de texto">
+            A+
+          </button>
+        </div>
+        <div class="toolbar-group">
+          <label class="toggle">
+            <input id="toggle-contrast" type="checkbox" />
+            <span>Contraste alto</span>
+          </label>
+          <label class="toggle">
+            <input id="toggle-motion" type="checkbox" />
+            <span>Reducir animaciones</span>
+          </label>
+        </div>
+      </div>
+    </header>
+
+    <main id="contenido" tabindex="-1">
+      <section id="buscador" class="panel" aria-labelledby="buscador-title">
+        <div class="panel-header">
+          <h2 id="buscador-title">Buscador accesible</h2>
+          <p>
+            Busca servicios y recursos. Los resultados se anuncian en tiempo real
+            mediante un área viva.
+          </p>
+        </div>
+        <div class="panel-body">
+          <label class="field" for="search-input">Buscar término</label>
+          <input
+            id="search-input"
+            name="busqueda"
+            type="search"
+            inputmode="search"
+            autocomplete="off"
+            aria-describedby="search-help"
+          />
+          <p id="search-help" class="help">
+            Escribe para filtrar la lista. Usa tabulador para navegar por los resultados.
+          </p>
+          <div class="results" role="region" aria-live="polite" aria-atomic="true">
+            <p id="results-count">Mostrando 8 resultados.</p>
+          </div>
+          <ul id="search-results" class="card-list" role="list"></ul>
+        </div>
+      </section>
+
+      <section id="tareas" class="panel" aria-labelledby="tareas-title">
+        <div class="panel-header">
+          <h2 id="tareas-title">Lista de tareas accesible</h2>
+          <p>
+            Crea tareas con descripciones claras, marca completadas y recibe
+            confirmación por audio y texto.
+          </p>
+        </div>
+        <div class="panel-body">
+          <form id="todo-form" class="stack" aria-describedby="todo-help">
+            <label class="field" for="todo-input">Nueva tarea</label>
+            <input id="todo-input" name="tarea" type="text" required maxlength="80" />
+            <button class="btn primary" type="submit">Agregar tarea</button>
+            <p id="todo-help" class="help">
+              Usa Enter para agregar. Navega por las tareas con las teclas de tabulación.
+            </p>
+          </form>
+          <div class="results" role="status" aria-live="polite" aria-atomic="true">
+            <p id="todo-status">No hay tareas pendientes.</p>
+          </div>
+          <ul id="todo-list" class="todo-list" role="list"></ul>
+        </div>
+      </section>
+
+      <section id="juegos" class="panel" aria-labelledby="juegos-title">
+        <div class="panel-header">
+          <h2 id="juegos-title">Juegos accesibles</h2>
+          <p>
+            Juegos sin audio obligatorio, con instrucciones claras y controles de teclado.
+          </p>
+        </div>
+        <div class="panel-body grid">
+          <article class="game" aria-labelledby="game-one-title">
+            <h3 id="game-one-title">Adivina el número</h3>
+            <p>
+              Intenta adivinar un número entre 1 y 20. Recibirás pistas de “alto” o
+              “bajo”.
+            </p>
+            <form id="guess-form" class="stack" aria-describedby="guess-help">
+              <label class="field" for="guess-input">Tu número</label>
+              <input
+                id="guess-input"
+                name="numero"
+                type="number"
+                min="1"
+                max="20"
+                required
+              />
+              <button class="btn primary" type="submit">Comprobar</button>
+              <p id="guess-help" class="help">
+                Puedes reiniciar el juego cuando lo desees.
+              </p>
+            </form>
+            <div class="results" role="status" aria-live="polite" aria-atomic="true">
+              <p id="guess-status">El juego está listo. Escribe un número.</p>
+            </div>
+            <button id="guess-reset" class="btn" type="button">Reiniciar juego</button>
+          </article>
+
+          <article class="game" aria-labelledby="game-two-title">
+            <h3 id="game-two-title">Secuencia de memoria</h3>
+            <p>
+              Observa la secuencia y repítela. Usa los botones o las teclas 1, 2 y 3.
+            </p>
+            <div class="sequence" role="group" aria-label="Botones de la secuencia">
+              <button class="btn sequence-btn" data-step="1">1</button>
+              <button class="btn sequence-btn" data-step="2">2</button>
+              <button class="btn sequence-btn" data-step="3">3</button>
+            </div>
+            <div class="results" role="status" aria-live="polite" aria-atomic="true">
+              <p id="sequence-status">Pulsa “Iniciar” para comenzar.</p>
+            </div>
+            <button id="sequence-start" class="btn primary" type="button">Iniciar</button>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>
+        Diseñado para accesibilidad cognitiva, motora, visual y auditiva. Ajusta los
+        controles de la cabecera según tus necesidades.
+      </p>
+    </footer>
+
+    <script src="app.js"></script>
+  </body>
+</html>
